@@ -25,7 +25,7 @@ router.get("/:contactId", async (req, res, next) => {
     const { contactId } = req.params;
     const result = await contacts.getContactById(contactId);
     if (!result) {
-      throw res.json(httpError(404, "Not found"));
+      throw httpError(404, "Not found");
     }
     res.status(200).json(result);
   } catch (error) {
@@ -37,7 +37,7 @@ router.post("/", async (req, res, next) => {
   try {
     const { error } = fullUserSchema.validate(req.body);
     if (error) {
-      throw res.json(httpError(400, "missing required name field"));
+      throw httpError(400, "missing required name field");
     }
     const { name, email, phone } = req.body;
     const result = await contacts.addContact({ name, email, phone });
@@ -52,7 +52,7 @@ router.delete("/:contactId", async (req, res, next) => {
     const { contactId } = req.params;
     const result = await contacts.removeContact(contactId);
     if (!result) {
-      throw res.json(httpError(404, "Not found"));
+      throw httpError(404, "Not found");
     }
     res.status(200).json({ message: "contact deleted" });
   } catch (error) {
@@ -64,12 +64,12 @@ router.put("/:contactId", async (req, res, next) => {
   try {
     const { error } = fullUserSchema.validate(req.body);
     if (error) {
-      throw res.json(httpError(400, "missing required name field"));
+      throw httpError(400, "missing required name field");
     }
     const { contactId } = req.params;
     const result = await contacts.updateContact(contactId, req.body);
     if (!result) {
-      throw res.json(httpError(404, "Not found"));
+      throw httpError(404, "Not found");
     }
     res.status(200).json(result);
   } catch (error) {
